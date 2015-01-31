@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>ripple | 飞云如月的博客</title>
+  <title>Archives: 2015 | 飞云如月的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <link rel="icon" href="/favicon.ico">
@@ -53,10 +53,12 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-ripple" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main">
+  
+    <article id="post-hexo-save-markdown" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/11/18/ripple/" class="article-date">
-  <time datetime="2014-11-18T13:42:18.000Z" itemprop="datePublished">Nov 18 2014</time>
+    <a href="/2015/01/31/hexo-save-markdown/" class="article-date">
+  <time datetime="2015-01-31T03:34:52.000Z" itemprop="datePublished">Jan 31 2015</time>
 </a>
     
   </div>
@@ -66,8 +68,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      ripple
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/31/hexo-save-markdown/">hexo 保存markdown源码</a>
     </h1>
   
 
@@ -75,65 +77,51 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/ripple/ripple-rest" target="_blank" rel="external">ripple-rest</a> 这个项目提供了许多rest风格的API，可以完成一些基本的操作，如查询余额、查询信任网关等。Rest是今年来比较流行的一种设计风格，Rest风格的url比较常见，如下：<br><a id="more"></a></p>
-<ul>
-<li>GET /blog/123 获取id为123的blog</li>
-<li>GET /blogs    获取所有的blog</li>
-<li>POST /blog    发表一篇新的blog</li>
-</ul>
-<p>Rest充分利用了HTTP自带的方法GET、POST、DELETE、PUT等等。现在的一些开放平台基本都提供了Rest风格的API，如新浪微博。</p>
+        <p>刚开始接触<a href="http://hexo.io" target="_blank" rel="external">hexo</a>的时候就有个疑问，<strong>README.md</strong>放到哪里？写文章用到的<strong>markdown</strong>源码如何保存，难不成换电脑之后我还得拷贝一份之前的目录？这些问题困扰了我好久，让我觉得不是很爽。我也想到过其他一些方法，如新建一个repository，然后将这些源码保存到这里。但是觉得这样不够<strong>优雅</strong>（知乎看多了）。</p>
+<p>以前一直用我的Ubuntu 14.04，08年买的本，2G内存，开个Android studio卡的不行，于是换上了我女朋友的本。昨天晚上想写点东西（现在一耽误，我都忘了要写啥了），把Ubuntu上的源文件<em>拷</em>到了现在的本上。我觉得不能再拷来拷去了！于是在网上搜了一下，找到了简书上的<a href="http://www.jianshu.com/p/e6b2fbcfa05e" target="_blank" rel="external">一篇文章</a>，看完之后，深受启发。答案就是新建一个分支，将这些源码文件放到这个分支里，源码和展现，各占一个分支（<strong>要注意的是html文件必须在master分支上</strong>）。git杀手锏，我竟然没有想到， orz！</p>
+<p>具体来说，就是分以下几步：</p>
+<ol>
+<li><p>将自己的github pages clone一份到本地</p>
+<blockquote>
+<p>git clone <a href="https://github.com/feiyunruyue/feiyunruyue.github.io" target="_blank" rel="external">https://github.com/feiyunruyue/feiyunruyue.github.io</a></p>
+</blockquote>
+</li>
+<li><p>新建一个空的分支(orphan也是一个新的知识点啊)</p>
+<blockquote>
+<p>git checkout —orphan blog_source</p>
+</blockquote>
+</li>
+<li><p>这时候自己目录下应该是空的，添加blog源码，</p>
+<blockquote>
+<p>git add .<br>git commit -m “xxxxxxx”</p>
+</blockquote>
+</li>
+<li><p>添加远程分支</p>
+<blockquote>
+<p>git push origin blog_source:blog_source</p>
+</blockquote>
+</li>
+<li><p>最后一步，更完美一点点。在github 项目上选择settings-&gt;defaul branch</p>
+</li>
+</ol>
+<p><strong>大功告成！</strong></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://feiyunruyue.github.io/2014/11/18/ripple/" data-id="xbph719mb8dj5qjo" class="article-share-link">Share</a>
+      <a data-url="http://feiyunruyue.github.io/2015/01/31/hexo-save-markdown/" data-id="dcduyw75w1g116wh" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
     </footer>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2014/11/22/package/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          package.json ～和^
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2014/05/09/kindle/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">今年读十本书吧</div>
-    </a>
-  
-</nav>
-
   
 </article>
 
 
-  <section id="comments">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-ripple" data-title="ripple" data-url="http://feiyunruyue.github.io/2014/11/18/ripple/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-   <script type="text/javascript">
-    var duoshuoQuery = {short_name:"feiyunruyue"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-   <!-- 多说公共JS代码 end -->
-  </section>
+
+  
   
 </section>
         
