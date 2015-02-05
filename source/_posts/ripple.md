@@ -9,3 +9,10 @@ tags:
 * POST /blog    发表一篇新的blog
 
 Rest充分利用了HTTP自带的方法GET、POST、DELETE、PUT等等。现在的一些开放平台基本都提供了Rest风格的API，如新浪微博。
+
+通过这个接口，我顺手做了个查询XRP数量的网页。
+> GET /v1/accounts/{:address}/balances
+
+Demo：[http://feiyunruyue.github.io/ripple/](http://feiyunruyue.github.io/ripple/)
+
+github地址：[https://github.com/feiyunruyue/ripple](https://github.com/feiyunruyue/ripple)
