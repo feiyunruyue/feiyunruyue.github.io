@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>今年读十本书吧 | 飞云如月的博客</title>
+  <title>Category: 编程 | 飞云如月的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <link rel="icon" href="/favicon.ico">
@@ -53,14 +53,16 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-kindle" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main">
+  
+    <article id="post-sqlite" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/09/kindle/" class="article-date">
-  <time datetime="2014-05-09T14:24:50.000Z" itemprop="datePublished">May 9 2014</time>
+    <a href="/2015/02/28/sqlite/" class="article-date">
+  <time datetime="2015-02-28T14:28:15.000Z" itemprop="datePublished">Feb 28 2015</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/人丑就该多读书/">人丑就该多读书</a>
+    <a class="article-category-link" href="/categories/编程/">编程</a>
   </div>
 
   </div>
@@ -70,8 +72,8 @@
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      今年读十本书吧
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/28/sqlite/">sqlite是个好东西</a>
     </h1>
   
 
@@ -79,94 +81,42 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一直想买个kindle，就是舍不得。今年女朋友花了899在京东帮我买了kindle。确实不错的说，准备好好利用一下，就读个十本书吧！</p>
-<ul>
-<li>乌合之众</li>
-<li>人性的弱点（雨神推荐）</li>
-<li>英雄志（武侠小说）</li>
-<li>基督山伯爵（林神推荐过）</li>
-<li>金融的逻辑（之前浏览过一遍，重新看）</li>
-<li>活着（已完成）</li>
-<li>影响力(知乎有人推荐)</li>
-<li>杯雪（又是武侠）</li>
-<li>明将军系列（武侠）</li>
-<li>灵飞经（凤歌）</li>
-<li>九州缥缈录（好书）</li>
-<li>未完待续</li>
-</ul>
-<h2><a id="more"></a></h2>
-<p>2014-06-18</p>
-<p>最近看了知乎上的一些关于程序员兼职的问答，有点小激动，自己也想接个私活。今年希望能接一个单子。先看看需求吧，找准方向，再复习一下。</p>
-<p>这周末要搬家，终于要搬了。</p>
-<hr>
-<p>2014-07-19</p>
-<p>今天抽了点时间看了下Spring官网，还好有点收获，安装了maven，并进行了简单的测试。真怕在银行呆的什么技术都不会了。</p>
-<hr>
-<p>2014-12-12<br>三体，看完之后脑洞打开，地球人平时还是低调点好，别乱发信号。</p>
-<hr>
-<p>2014-12-13</p>
-<p>今天去中关村图书大厦买了几本技术书籍，我很少买书，研一的时候在当当上买过两本书，一本是介绍嵌入式操作系统uCOSII的，另外一本涉及Android底层源代码，虽然也读了点，但感觉效果不大。这次去买书是因为公司内部福利，先赞一下公司。昨天列了一份清单，但是到了地方才发现要找的书没有，比如《代码大全（第二版）》、《重构：改善既有代码的设计》。最后买了下面的几本：</p>
-<ul>
-<li>《Node.js 权威指南》 </li>
-<li>《数学之美（第二版）》</li>
-<li>《JavaScript语言精粹（修订版）》英文名字《JavaScript：The Good parts》</li>
-<li>《两周自制脚本语言》</li>
-<li>《go并发编程实战》</li>
-<li>《RESTful Web Apis 中文版》</li>
-<li>《Redis设计与实现》</li>
-<li>《代码整洁之道》</li>
-<li>《Spring技术内幕（第二版）》</li>
-</ul>
-<p>买的比较杂，因为福利只能一次用光，最后那本Spring还是为了不浪费凑的。当时有其他好书，想买，后来想想kindle上就能看，就不买实体书了。这里得再提一句，<strong> kindle是个好东西，早买早受益 </strong>。准备下周一拿到公司几本，不想写代码就看看书。</p>
+        <p>sqlite可以看作一个迷你的关系型数据库。很多嵌入式设备使用了sqlite，比如我们常见的Android、iPhone手机。一些项目不需要或者说没必要专门设置一个数据库服务器，这个时候就可以用sqlite了。</p>
+<p>最近一次我用到的sqlite背景是这样的（我做了简化）：</p>
+<blockquote>
+<p>大学同学想给别人做个客户端软件，从新浪财经获取股票当天的成交量，然后用程序新建了一个文件比如20150228.txt，里面的一行记录了一个股票代码和它的当日成交量。</p>
+</blockquote>
+<p>然后这个同学想让我帮忙计算5日成交均量、10日成交均量、20日成交均量这样的数据。问题来了，由于他所有的程序都是用C语言实现的，我这一部分也需要采用纯C进行开发。多年的失败经验告诉我，计算X日成交均量没有那么简单，好多问题需要考虑，比如求5日成交均量得确定是哪5天（只有工作日才有数据）、要使用C语言解析文件字符串找出对应的股票代码的成交量等等。WTF，我当时快1年没写过C代码了。</p>
+<p>由于只是个客户端软件，设计的时候没有单独再使用MySQL、Oracle等数据库服务器（如果是IBM干这个活，肯定把自己家的DB2搬过来，然后操作系统给你换成AIX，服务器换成自己的小型机，顺便设计一套巨复杂的流程，然后等着每年收你的钱）。这是一个好的突破点！</p>
+<p>换个思路，干嘛要用文件记录这些数据，这是数据库应该干的事。于是，我想起了sqlite。我在<a href="http://www.sqlite.org/" target="_blank" rel="external">sqlite官网</a>上下载了一份它的源文件，只需要sqlite3.c和sqlite3.h这两个文件，太体贴了。最后的方案变成了：</p>
+<blockquote>
+<ol>
+<li>在新浪财经获取股票信息，将当天日期、股票代码、当日成交量写到sqlite数据库表中</li>
+<li><p>使用类似如下sql语句获取5日成交量</p>
+<p> select avg(当日成交量) from 表名 t where t.stockcode = ‘股票代码’ and t.sdate &lt;= ‘当前日期’ order by sdate desc limit 5</p>
+</li>
+</ol>
+</blockquote>
+<p>用到的sql语句是点睛之笔，它首先按照日期降序排序，然后根据股票代码获取了最近5天的股票信息，然后利用了标准SQL自带的求平均值的AVG函数求出了5日成交均量。</p>
+<p>大功告成。</p>
+<p>研究生期间我利用sqlite的特性开发的Android软件也获得了中国移动的一个小奖，以后补充上。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://feiyunruyue.github.io/2014/05/09/kindle/" data-id="f66xh5n8b66423q5" class="article-share-link">Share</a>
+      <a data-url="http://feiyunruyue.github.io/2015/02/28/sqlite/" data-id="ad02jdviij2b370d" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kindle/">kindle</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sqlite/">sqlite</a></li></ul>
 
     </footer>
   </div>
   
-    
-<nav id="article-nav">
-  
-    <a href="/2014/11/18/ripple/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          ripple
-        
-      </div>
-    </a>
-  
-  
-</nav>
-
-  
 </article>
 
 
-  <section id="comments">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-kindle" data-title="今年读十本书吧" data-url="http://feiyunruyue.github.io/2014/05/09/kindle/"></div>
-    <!-- 多说评论框 end -->
-   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-   <script type="text/javascript">
-    var duoshuoQuery = {short_name:"feiyunruyue"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-   <!-- 多说公共JS代码 end -->
-  </section>
+
+  
   
 </section>
         
