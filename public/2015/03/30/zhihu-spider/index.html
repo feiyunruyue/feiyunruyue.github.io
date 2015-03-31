@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>今年读十本书吧 | 飞云如月的博客</title>
+  <title>获取知乎推荐问题Java小脚本 | 飞云如月的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <link rel="icon" href="/favicon.ico">
@@ -53,14 +53,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-kindle" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-zhihu-spider" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/09/kindle/" class="article-date">
-  <time datetime="2014-05-09T14:24:50.000Z" itemprop="datePublished">May 9 2014</time>
+    <a href="/2015/03/30/zhihu-spider/" class="article-date">
+  <time datetime="2015-03-30T13:52:10.000Z" itemprop="datePublished">Mar 30 2015</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/人丑就该多读书/">人丑就该多读书</a>
+    <a class="article-category-link" href="/categories/编程/">编程</a>
   </div>
 
   </div>
@@ -71,7 +71,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      今年读十本书吧
+      获取知乎推荐问题Java小脚本
     </h1>
   
 
@@ -79,69 +79,77 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一直想买个kindle，就是舍不得。今年女朋友花了899在京东帮我买了kindle。确实不错的说，准备好好利用一下，就读个十本书吧！</p>
+        <p>今天参照<a href="https://github.com/callmewhy/ZhihuDown" target="_blank" rel="external">github</a>写了个一百多行的Java小脚本，目前仅仅能爬取<a href="http://www.zhihu.com/explore" target="_blank" rel="external">知乎发现</a>上的推荐问题，生成markdown格式的文本，效果大体如下：</p>
+<blockquote>
 <ul>
-<li>乌合之众</li>
-<li>人性的弱点（雨神推荐）</li>
-<li>英雄志（武侠小说）</li>
-<li>基督山伯爵（林神推荐过）</li>
-<li>金融的逻辑（之前浏览过一遍，重新看）</li>
-<li>活着（已完成）</li>
-<li>影响力(知乎有人推荐)</li>
-<li>杯雪（又是武侠）</li>
-<li>明将军系列（武侠）</li>
-<li>灵飞经（凤歌）</li>
-<li>九州缥缈录（好书）</li>
-<li>未完待续</li>
+<li><a href="http://www.zhihu.com/question/28173041" target="_blank" rel="external">洗手间整理收纳有哪些最佳实践？</a> </li>
 </ul>
-<h2><a id="more"></a></h2>
-<p>2014-06-18</p>
-<p>最近看了知乎上的一些关于程序员兼职的问答，有点小激动，自己也想接个私活。今年希望能接一个单子。先看看需求吧，找准方向，再复习一下。</p>
-<p>这周末要搬家，终于要搬了。</p>
-<hr>
-<p>2014-07-19</p>
-<p>今天抽了点时间看了下Spring官网，还好有点收获，安装了maven，并进行了简单的测试。真怕在银行呆的什么技术都不会了。</p>
-<hr>
-<p>2014-12-12<br>三体，看完之后脑洞打开，地球人平时还是低调点好，别乱发信号。</p>
-<hr>
-<p>2014-12-13</p>
-<p>今天去中关村图书大厦买了几本技术书籍，我很少买书，研一的时候在当当上买过两本书，一本是介绍嵌入式操作系统uCOSII的，另外一本涉及Android底层源代码，虽然也读了点，但感觉效果不大。这次去买书是因为公司内部福利，先赞一下公司。昨天列了一份清单，但是到了地方才发现要找的书没有，比如《代码大全（第二版）》、《重构：改善既有代码的设计》。最后买了下面的几本：</p>
 <ul>
-<li>《Node.js 权威指南》 </li>
-<li>《数学之美（第二版）》</li>
-<li>《JavaScript语言精粹（修订版）》英文名字《JavaScript：The Good parts》</li>
-<li>《两周自制脚本语言》</li>
-<li>《go并发编程实战》</li>
-<li>《RESTful Web Apis 中文版》</li>
-<li>《Redis设计与实现》</li>
-<li>《代码整洁之道》</li>
-<li>《Spring技术内幕（第二版）》</li>
+<li><a href="http://www.zhihu.com/question/29162468" target="_blank" rel="external">职场菜鸟，自己不擅长的工作任务压到身上，该怎么应对？</a></li>
 </ul>
-<p>买的比较杂，因为福利只能一次用光，最后那本Spring还是为了不浪费凑的。当时有其他好书，想买，后来想想kindle上就能看，就不买实体书了。这里得再提一句，<strong> kindle是个好东西，早买早受益 </strong>。准备下周一拿到公司几本，不想写代码就看看书。</p>
+<p>入职差不多一年，一开始工作还蛮顺利的。可是最近老板经常布置一些自己不擅长的工作给我，而且都是特别重要的，像做代表公司形象的客户提案PPT、产品的新媒体推广方案、搭建网站等等。自己专业不是这一块，根本不懂这些东西，所以觉得压力特别大。感觉自己就算做出来也一定不是老板要求的那样，所以总是无从下手，经常拖延，老板过来询问进度的时候我也只能敷衍过去，不敢跟他们讲我不会做……</p>
+</blockquote>
+<a id="more"></a>
+
+<p>代码很简单，主要利用了正则表达式。<br>一个Java POJO类，定义了我们后面要用到的知乎问题、URL以及对问题的简单描述：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Zhihu {
+    <span class="keyword">private</span> String questionTitle;<span class="comment">// 问题标题</span>
+    <span class="keyword">private</span> String questionDetail;<span class="comment">// 问题描述</span>
+    <span class="keyword">private</span> String questionUrl;<span class="comment">// 问题url</span>
+
+          <span class="comment">//getters and setters</span>
+}
+</code></pre><p>知乎采用REST风格的URL，其实我们只需要获取问题的id即可。</p>
+<p>比如<a href="http://www.zhihu.com/question/29097694" target="_blank" rel="external">http://www.zhihu.com/question/29097694</a>这个问题Html源码为</p>
+<pre><code>&lt;<span class="keyword">div</span> <span class="property">id</span>=<span class="string">"zh-question-title"</span> data-editable=<span class="string">"true"</span>&gt;    
+&lt;h2 <span class="type">class</span>=<span class="string">"zm-item-title zm-editable-content"</span>&gt;    
+非<span class="number">985</span> <span class="number">211</span>大学的计算机系本科生进不了腾讯、网易、百度这些公司工作吗？    
+&lt;/h2&gt;
+&lt;/<span class="keyword">div</span>&gt;
+&lt;<span class="keyword">div</span> <span class="property">id</span>=<span class="string">"zh-question-detail"</span> <span class="type">class</span>=<span class="string">"zm-item-rich-text"</span> data-resourceid=<span class="string">"3821992"</span> data-action=<span class="string">"/question/detail"</span>&gt;    
+&lt;<span class="keyword">div</span> <span class="type">class</span>=<span class="string">"zm-editable-content"</span>&gt;今天同学去南大的招聘会，回来很失望地告诉我，网易在南京只招南大和东南的毕业生。&lt;br&gt;而且据说投简历的时候抬头就要写自己是什么大学的，大学比较垃圾的都是直接pass掉，连笔试面试机会都没有。这是真的吗？听很多人说，毕业后第一份工作一定要去大公司，否则以后很难发展。像我这种非<span class="number">211</span>学校的苦学<span class="number">3</span>年计算机，真的就没戏了吗？&lt;/<span class="keyword">div</span>&gt;    
+&lt;/<span class="keyword">div</span>&gt;
+</code></pre><p>要想解析出问题标题来，需要用正则表达式匹配<code>zh-question-title</code>这个id下的文字，可以使用下面的正则表达式：</p>
+<blockquote>
+<p>zh-question-title.+?<h2.+?>(.+?)</h2.+?></p>
+</blockquote>
+<p><code>+?</code>中的问号表明是最小匹配</p>
+<p>同理，问题描述可以用下面的正则表达式匹配：</p>
+<blockquote>
+<p>zh-question-detail.+?<div.+?>(.+?)</div.+?></p>
+</blockquote>
+<p>可以试下把最后一个问号去掉是什么效果（它会贪婪地往下匹配）。</p>
+<p>代码逻辑如下：</p>
+<pre><code><span class="comment">//匹配问题title</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String QUESTION_TITLE = <span class="string">"zh-question-title.+?&lt;h2.+?&gt;(.+?)&lt;/h2&gt;"</span>;
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Pattern patternTitle = Pattern.<span class="keyword">compile</span>(QUESTION_TITLE);
+
+Matcher matcher = patternTitle.matcher(Html源码);
+String questionTitle = <span class="keyword">null</span>;
+<span class="keyword">if</span>(matcher.<span class="keyword">find</span>()){
+    questionTitle = matcher.<span class="keyword">group</span>(<span class="number">1</span>);
+}
+</code></pre><p>matcher.group(0)匹配的是正则表达式本身！</p>
+<p>OK，可以运行了！以后慢慢加功能！</p>
+<p><a href="https://github.com/feiyunruyue/zhihu/tree/master/Spider/src" target="_blank" rel="external">源码在此！</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://feiyunruyue.github.io/2014/05/09/kindle/" data-id="f66xh5n8b66423q5" class="article-share-link">Share</a>
+      <a data-url="http://feiyunruyue.github.io/2015/03/30/zhihu-spider/" data-id="ao47gbrbq3k07e4m" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kindle/">kindle</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2014/11/18/ripple/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          ripple
-        
-      </div>
-    </a>
   
+    <a href="/2015/03/12/happybirthday26/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">写在26岁生日之际</div>
+    </a>
   
 </nav>
 
@@ -151,7 +159,7 @@
 
   <section id="comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="post-kindle" data-title="今年读十本书吧" data-url="http://feiyunruyue.github.io/2014/05/09/kindle/"></div>
+    <div class="ds-thread" data-thread-key="post-zhihu-spider" data-title="获取知乎推荐问题Java小脚本" data-url="http://feiyunruyue.github.io/2015/03/30/zhihu-spider/"></div>
     <!-- 多说评论框 end -->
    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
    <script type="text/javascript">
