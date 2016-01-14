@@ -101,6 +101,6 @@ stylus:
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
-  type: github
+  type: git
   repository: https://github.com/feiyunruyue/feiyunruyue.github.io.git
   branch: master
