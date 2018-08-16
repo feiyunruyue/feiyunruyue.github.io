@@ -23,8 +23,8 @@ while (true) {
 服务端代码
 
 ```
-bossGroup = new NioEventLoopGroup();
-workerGroup = new NioEventLoopGroup();
+EventLoopGroup bossGroup = new NioEventLoopGroup();
+EventLoopGroup workerGroup = new NioEventLoopGroup();
 ServerBootstrap bootstrap = new ServerBootstrap();
 bootstrap.group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
@@ -49,14 +49,16 @@ future.channel().closeFuture().sync();
 
 从代码中可以看到，与普通的ServerSocket不同，这段代码不需要处理等待连接建立，读数据、写数据（通常来说这些操作都是阻塞的）。那么问题来了，具体的业务逻辑在哪里呢，答案就是pipeline中的各个handler。RpcDecoder负责解码，继承了ByteToMessageDecoder类(ChannelInboundHandlerAdapter的子类)，将字节流解析成java对象，收到字节流的时候触发；RpcEncoder负责编码，继承了MessageToByteEncoder类（ChannelOutboundHandlerAdapter的子类），将java对象编码为字节流，发送字节流时触发；RpcHandler负责真正的业务逻辑，根据decoder后的java对象，利用反射调用本地方法，并将调用结果写回到输出流中。
 
-NioEventLoopGroup实际上是Reactor模式，后期专门说一下。
+NioEventLoopGroup实际上是Reactor模式，bossGroup和workerGroup可以看作两个线程池，前者负责接收客户端的TCP连接，后者负责处理I/O相关读写操作，后期可以专门说一下。
 
 backlog参数主要用于底层方法int listen(int sockfd, int backlog)，参数规定了内核为socket排队的最大连接个数。内核要维护两个队列：
 
 1. 未完成连接队列，三次握手还没有完成的队列，其大小通过/proc/sys/net/ipv4/tcp_max_syn_backlog指定
 2. 已完成连接队列，三次握手完成的队列，其大小通过/proc/sys/net/core/somaxconn指定，在使用listen函数时，内核会根据传入的backlog参数与系统参数somaxconn，取二者的较小值。
 
-两个队列之和不超过backlog。
+两个队列之和不超过backlog。放个图：
+
+![](/images/TCP队列.png)
 
 解码器：
 
