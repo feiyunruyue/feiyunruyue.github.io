@@ -60,6 +60,11 @@ backlog参数主要用于底层方法int listen(int sockfd, int backlog)，参�
 
 ![](/images/TCP队列.png)
 
+channel和channelPipeline的关系，从网上找了段解释，非常清楚，原文出处没找到。
+
+> 一个Channel分配一个ChannelPipeline，每个ChannelPipeline里是多个ChannelHandler组成的链表，每个ChannelHandler会对应一个ChannelHandlerContext。看看下面的图就能明白：
+![](/images/channel.png)
+
 解码器：
 
 ```
