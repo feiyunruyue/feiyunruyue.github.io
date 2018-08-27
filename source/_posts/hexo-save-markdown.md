@@ -20,7 +20,7 @@ tags: hexo
 	 > git commit -m "xxxxxxx"
 
  4. 添加远程分支
-	 > git push origin blog_source:blog_source
+	 > git push origin blog_source
 
  5. 最后一步，更完美一点点。在github 项目上选择settings->defaul branch
 
