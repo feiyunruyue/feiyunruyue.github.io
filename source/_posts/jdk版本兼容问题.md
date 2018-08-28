@@ -8,11 +8,7 @@ tags:
 
 <!-- more -->
 
-java的class文件，前4个字节为魔数（Magic Number）, 0xCAFEBABE，用来确定这是一个class文件。
-
-第5,6个字节是次版本号(Minor Version)。
-
-第7,8个字节是主版本号（Major Version）。
+java的class文件，前4个字节为魔数（Magic Number）, 0xCAFEBABE，用来确定这是一个class文件。第5,6个字节是次版本号(Minor Version)。第7,8个字节是主版本号（Major Version）。
 
 jdk版本号跟class主版本号对应关系如下：
 
@@ -28,7 +24,8 @@ JDK 1.3 = 47 (0x2F hex),
 JDK 1.2 = 46 (0x2E hex),
 JDK 1.1 = 45 (0x2D hex).
 
-本地测试了下，写了个简单的hello world, 使用jdk10进行编译，然后用jdk8运行，报错如下：
+
+类加载的过程中，虚拟机会对class文件格式进行验证，验证是否以魔数0xCAFEBABE开头，验证主次版本号是否在当前虚拟机的处理范围内。本地测试了下，写了个简单的hello world, 使用jdk10进行编译，然后用jdk8运行，报错如下：
 
 ```
 Error: A JNI error has occurred, please check your installation and try again
