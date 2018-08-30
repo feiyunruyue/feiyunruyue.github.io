@@ -53,5 +53,18 @@ SNAPSHOT 测试版本，开发的时候用，发布到生产的使用RELEASE版�
 
 exclusions 排除传递依赖。
 
+有些jar包需要区分不同的JDK，可以使用classifier，比如
+
+```
+  <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>${json-lib.version}</version>
+      <classifier>jdk15</classifier>
+  </dependency>
+```            
+
+maven-compiler-plugin用来编译Java代码，maven-resources-plugin则用来处理资源文件。默认的主资源文件目录是src/main/resources，如果需要增加资源文件目录，通过配置maven-resources-plugin来实现。
+
 其他的用到的时候再查吧。
 
