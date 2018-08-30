@@ -1,10 +1,9 @@
 # Header
 menu:
-  Home: /
-  Archives: /archives
+  首页: /
 
 # Content
-excerpt_link: Read More
+excerpt_link: 进来看看
 fancybox: true
 
 # Sidebar
