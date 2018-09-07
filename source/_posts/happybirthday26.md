@@ -1,7 +1,7 @@
 title: 写在26岁生日之际
 date: 2015-03-12 22:07:49
 categories:
-tags:
+tags: 总结
 ---
 过了今天就26岁了。
 
