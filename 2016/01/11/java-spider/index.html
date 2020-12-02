@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>java 爬虫入门 | 飞云如月的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="text/javascript">
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?3719473b3d813b5be32af0a575556492";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞云如月的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://feiyunruyue.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java-spider" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/11/java-spider/" class="article-date">
+  <time datetime="2016-01-11T13:16:58.000Z" itemprop="datePublished">2016-01-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/编程/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java 爬虫入门
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>很久很久以前我就想搞个爬虫试试，但直到最近才真正开始动手尝试，总结原因就是一个“懒”字。前一篇博客<a href="http://feiyunruyue.github.io/2015/03/30/zhihu-spider/">《获取知乎推荐问题Java小脚本》</a>，可以算是爬虫的入门Demo，脚本完成了下载html代码、通过正则表达式提取信息、将提取的信息打印到控制台这些基本的功能，麻雀虽小，但也算是个爬虫雏形，先把这个小Demo搞一遍而不是直接上手爬虫框架，有利于我们理解爬虫的原理。<br><a id="more"></a><br>爬虫的原理可以在网上搜一下，我简单说下我自己的理解。</p>
+<blockquote>
+<p>给定一个入口url，将页面下载到本地，解析整个页面，将解析后的结果处理后保存，解析过程中不断发现新的url，重复这个过程。</p>
+</blockquote>
+<p>当然，好多重要的细节都被我省略掉了，但是知道这些基本就可以开始写代码了。写吧，写完再改。</p>
+<p>隆重推荐一款良心的java爬虫框架——<a href="http://webmagic.io/" target="_blank" rel="noopener">webmagic</a>。设计参考了Scrapy，实现采用了java常见的类库，由4个组件（Downloader、PageProcessor、Scheduler、Pipeline）构成，甚合我意。Downloader负责下载页面， PageProcessor负责分析页面提取信息，Scheduler负责调度，Pipeline负责善后，保存我们提取出的信息。柿子从最软的开始捏，我们也先从最简单的开始，只需实现PageProcessor接口。</p>
+<pre><code>import us.codecraft.webmagic.Page;
+import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.processor.PageProcessor;
+
+public class ZhihuProcessor implements PageProcessor{
+      private Site site = Site.me().setCycleRetryTimes(5).setRetryTimes(5).setSleepTime(500).setTimeOut(3 * 60 * 1000)
+                .setUserAgent(&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0&quot;)
+                .addHeader(&quot;Accept&quot;, &quot;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&quot;)
+                .addHeader(&quot;Accept-Language&quot;, &quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;)
+                .setCharset(&quot;UTF-8&quot;);
+
+    @Override
+    public void process(Page page) {
+
+    }
+
+    @Override
+    public Site getSite() {
+        return site;
+    }
+}
+</code></pre><p>开始的写法都是比较固定的，真正需要我们自己去花心思的是·<code>process</code>方法。</p>
+<pre><code>@Override
+public void process(Page page) {
+        List&lt;String&gt; answerUrls =  page.getHtml().$(&quot;.question_link&quot;).links().regex(&quot;/question/\\d+/answer/\\d+&quot;).all();
+        page.addTargetRequests(answerUrls);
+
+        List&lt;String&gt; answers = page.getHtml().xpath(&quot;//div[@id=&apos;zh-question-answer-wrap&apos;]/div&quot;).all();
+        logger.debug(page.getUrl());
+        for(String answer: answers){
+           page.putField(&quot;answer&quot;, new Html(answer).xpath(&quot;//div[@class=&apos;zm-editable-content]/html()&quot;).toString());
+        }
+}
+</code></pre><p>首先选中所有class为question_link的元素，links方法负责提取所有的url，然后再用regex正则表达式限定一下，这样就能将本页的所有答案的url提取出来。<code>page.addTargetRequests(answerUrls);</code>负责把这些url加到抓取队列里。剩下的代码负责提取答案url里的内容。选取页面元素用到了XPath，这是w3c当年制定的一项标准（以前没注意这项技术，以为跟xhtml一样鸡肋的，没想到啊），XPath语法超简单，<a href="http://www.w3school.com.cn/xpath/xpath_syntax.asp" target="_blank" rel="noopener">网上的教程</a>就够用，但是真是实用！</p>
+<p>  细心的同学应该会注意到，我们没有在PageProcessor处理提取出来的answer信息，以后会继续说，入门Demo不展示PipeLine。webmagic新增了一个PipeLine接口，专门用来处理PageProcessor提取出来的信息。这样有些好处，最起码第一印象，层次分明了，每个类分工比较清晰，符合设计模式里说的“单一职责”原则。把一件事情干好就不错了！</p>
+<p>如何运行呢，看我们的main方法。</p>
+<p>晕，想上网查点webmagic的资料的，结果一不小心浏览了半个多小时网页。言归正传，webmagic的入口是一个Spider类，该类实现了Runnable接口，包含了上面我们说过的4大组件，</p>
+<pre><code>Spider.create(new ZhihuProcessor())
+            .addUrl(&quot;https://www.zhihu.com/people/wang-liang-50-73/answers?page=1&quot;)
+            .addPipeline(new ConsolePipeline())
+            .thread(3)
+            .run();
+</code></pre><p>运行一下，可以看到控制台打印出了我们提取出的知乎答案。</p>
+<p>大功告成。动手试一下吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/23/java-spider-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用java爬取草榴图片
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/30/zhihu-spider/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">获取知乎推荐问题Java小脚本</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人丑就该多读书/">人丑就该多读书</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/投资/">投资</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fiddler/">Fiddler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MQ/">MQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kindle/">kindle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlite/">sqlite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字货币/">数字货币</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Fiddler/" style="font-size: 10px;">Fiddler</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/MQ/" style="font-size: 10px;">MQ</a> <a href="/tags/Netty/" style="font-size: 15px;">Netty</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/kindle/" style="font-size: 15px;">kindle</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/sqlite/" style="font-size: 10px;">sqlite</a> <a href="/tags/总结/" style="font-size: 20px;">总结</a> <a href="/tags/数字货币/" style="font-size: 10px;">数字货币</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">2020年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">2018年 08月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">2018年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">2016年 08月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">2016年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">2015年 03月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">2015年 02月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">2014年 11月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">2014年 05月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/02/数字货币投资/">数字货币投资</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/28/jdk版本兼容问题/">jdk版本兼容问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/20/Maven学习/">Maven学习</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/17/mysql慢查询/">mysql慢查询</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/14/Netty学习（2）/">Netty学习（2）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 feiyun<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+</nav>
+    
+
+<script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"></scripst>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

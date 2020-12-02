@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>volatile“可见性”理解 | 飞云如月的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="text/javascript">
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?3719473b3d813b5be32af0a575556492";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">飞云如月的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://feiyunruyue.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-volatile" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/29/volatile/" class="article-date">
+  <time datetime="2016-01-29T13:49:46.000Z" itemprop="datePublished">2016-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/编程/">编程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      volatile“可见性”理解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>volatile这个关键字我一直没机会用，一般能用synchronized我就用synchronized了。volatile关键字可以保证所有线程对变量的“可见性”，即当一个线程修改一个共享变量时，其它线程能够读到这个最新的值。我当时以为我懂了，后来发现我错了。为了介绍“可见性”，我们先简单说一下Java的内存模型。<br><a id="more"></a></p>
+<h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><p>Java为了跨平台，有自己的内存模型，可以屏蔽不同操作系统带来的内存访问差异。Java内存模型分为两块：<strong>主内存和工作内存</strong>。主内存可以想象成是一块儿公共的内存，工作内存则类似处理器的高速缓存且每个线程只能访问自己的工作内存，不能直接访问主内存，比如线程想要读取主内存中的一个变量，需要将该变量加载到自己的工作内存，然后才能读取。</p>
+<p>工作内存和主内存之间数据交互有8种操作：</p>
+<pre><code>1. lock: 作用于主内存，锁住主内存变量，使得只有一条线程能访问该变量
+2. unlock：作用于主内存，释放主内存变量，使得其他线程可以访问该变量
+3. read：作用于主内存，把主内存变量读到工作内存中
+4. load：作用于工作内存，把read操作从主内存得到的变量加载到工作内存
+5. use：作用于工作内存，把工作内存中的变量传递给执行引擎
+6. assign：作用于工作内存，将执行引擎中的变量赋值给工作内存
+7. store：作用于工作内存，将工作内存中的变量传送到主内存
+8. write： 作用于主内存，把store操作中得到的变量写入主内存
+</code></pre><p>可以重点看看lock、unlock、load、store这4种。一般的共享变量（没有用volatile修饰的），线程A从主内存读到它，然后在自己的工作内存修改，但是还没有写回到主内存，这时候线程B也从主内存读到它，这个时候读到的就是旧的值。volatile关键字就可以解决这个问题。</p>
+<h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><p>如果一个变量被声明成volatile，线程A修改了它，线程B去主内存读该变量时，能保证读到的变量是修改后的，即该变量对线程B也是可见的。</p>
+<p>再稍微深入一点点分析的话，那就是底层的指令能保证“对该变量进行写操作后，会将工作内存中的值写入主内存，并让其他线程工作内存中该变量失效，这样其他线程想要访问该变量时只能重新从主内存中加载”，从而保证了其他线程读到的变量也是最新的。</p>
+<p>volatile还有另外一层语义，即“禁止指令重排序”，这个以后再说。</p>
+<p>以上内容参考《深入理解Java虚拟机-JVM高级特性与最佳实践 第二版》，好书，我读了第二遍才读出味来。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/21/mybatis-generator/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          mybatis-generator 生成注解代码
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/23/java-spider-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用java爬取草榴图片</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人丑就该多读书/">人丑就该多读书</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/投资/">投资</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程/">编程</a><span class="category-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fiddler/">Fiddler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MQ/">MQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Netty/">Netty</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kindle/">kindle</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlite/">sqlite</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/总结/">总结</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字货币/">数字货币</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Fiddler/" style="font-size: 10px;">Fiddler</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/MQ/" style="font-size: 10px;">MQ</a> <a href="/tags/Netty/" style="font-size: 15px;">Netty</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/kindle/" style="font-size: 15px;">kindle</a> <a href="/tags/maven/" style="font-size: 10px;">maven</a> <a href="/tags/mybatis/" style="font-size: 15px;">mybatis</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/sqlite/" style="font-size: 10px;">sqlite</a> <a href="/tags/总结/" style="font-size: 20px;">总结</a> <a href="/tags/数字货币/" style="font-size: 10px;">数字货币</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">2020年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">2018年 08月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">2018年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">2017年 01月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">2016年 09月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">2016年 08月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">2016年 01月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">2015年 03月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">2015年 02月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015年 01月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014年 12月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">2014年 11月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">2014年 05月</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最近文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/02/数字货币投资/">数字货币投资</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/28/jdk版本兼容问题/">jdk版本兼容问题</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/20/Maven学习/">Maven学习</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/17/mysql慢查询/">mysql慢查询</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/14/Netty学习（2）/">Netty学习（2）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 feiyun<br>
+      Powered by <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+</nav>
+    
+
+<script src="http://lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.min.js"></scripst>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
